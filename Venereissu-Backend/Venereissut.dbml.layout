@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Venereissut">
+  <DataContextMoniker Name="/VenereissutDataContext" />
+  <nestedChildShapes>
+    <classShape Id="c3722276-fa6c-4fde-b766-34ae84fc9254" absoluteBounds="8.5, 2.25, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/VenereissutDataContext/Kohteet" />
+      <nestedChildShapes>
+        <elementListCompartment Id="36b5e274-69ab-4c10-ac78-e0f2fb2b9eae" absoluteBounds="8.515, 2.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="88116ee3-b716-4645-b2c1-eb2432d43017" absoluteBounds="6, 2.25, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/VenereissutDataContext/KohteetReissut" />
+      <nestedChildShapes>
+        <elementListCompartment Id="04162908-6f29-44de-a955-7b2c86367862" absoluteBounds="6.015, 2.71, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(8.5 : 3.13544840494792); (8 : 3.13544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/VenereissutDataContext/Kohteet/Kohteet_KohteetReissut" />
+      <nodes>
+        <classShapeMoniker Id="c3722276-fa6c-4fde-b766-34ae84fc9254" />
+        <classShapeMoniker Id="88116ee3-b716-4645-b2c1-eb2432d43017" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="20d2e1da-cb81-43a3-bdd6-0fcd83c576ff" absoluteBounds="3.25, 2.25, 2, 1.9631982421875">
+      <DataClassMoniker Name="/VenereissutDataContext/Reissut" />
+      <nestedChildShapes>
+        <elementListCompartment Id="cd641300-f3d9-4b72-8840-3c791c717d98" absoluteBounds="3.2649999999999997, 2.71, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.25 : 3.23159912109375); (6 : 3.23159912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/VenereissutDataContext/Reissut/Reissut_KohteetReissut" />
+      <nodes>
+        <classShapeMoniker Id="20d2e1da-cb81-43a3-bdd6-0fcd83c576ff" />
+        <classShapeMoniker Id="88116ee3-b716-4645-b2c1-eb2432d43017" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="80d7afcc-5d3d-40a8-af81-6c91595435b6" absoluteBounds="1, 2.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/VenereissutDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d5f406aa-5cf5-4385-8a13-4fb3d4a94e9f" absoluteBounds="1.0149999999999997, 2.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3 : 3.03929768880208); (3.25 : 3.03929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/VenereissutDataContext/User/User_Reissut" />
+      <nodes>
+        <classShapeMoniker Id="80d7afcc-5d3d-40a8-af81-6c91595435b6" />
+        <classShapeMoniker Id="20d2e1da-cb81-43a3-bdd6-0fcd83c576ff" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

@@ -259,3 +259,4 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Venereissu-Backend/Properties/PublishProfiles/venereissu - Web Deploy.pubxml

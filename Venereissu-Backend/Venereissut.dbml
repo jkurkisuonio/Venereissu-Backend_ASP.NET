@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Venereissu" Class="VenereissutDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\aspnet\github\jkurkisuonio\Venereissu-backend-WEB\Venereissu-Backend\Venereissu-Backend\Venereissu.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="VenereissuConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Kohteet" Member="Kohteets">
+    <Type Name="Kohteet">
+      <Column Name="Kohde_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nimi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Koordinaatit" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="KuvaBase64" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Kuvausteksti" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Kohteet_KohteetReissut" Member="KohteetReissuts" ThisKey="Kohde_Id" OtherKey="Kohde_Id" Type="KohteetReissut" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KohteetReissut" Member="KohteetReissuts">
+    <Type Name="KohteetReissut">
+      <Column Name="KohdeReissu_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Kohde_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Reissu_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="KuvaBase64" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Saapuminen" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Lahteminen" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Tapahtumat" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Kohteet_KohteetReissut" Member="Kohteet" ThisKey="Kohde_Id" OtherKey="Kohde_Id" Type="Kohteet" IsForeignKey="true" />
+      <Association Name="Reissut_KohteetReissut" Member="Reissut" ThisKey="Reissu_Id" OtherKey="Reissu_Id" Type="Reissut" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Reissut" Member="Reissuts">
+    <Type Name="Reissut">
+      <Column Name="Reissu_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nimi" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Alkoi" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Paattyi" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Kuvausteksti" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Reissut_KohteetReissut" Member="KohteetReissuts" ThisKey="Reissu_Id" OtherKey="Reissu_Id" Type="KohteetReissut" />
+      <Association Name="User_Reissut" Member="User" ThisKey="UserName" OtherKey="UserName" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserName" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="User_Reissut" Member="Reissuts" ThisKey="UserName" OtherKey="UserName" Type="Reissut" />
+    </Type>
+  </Table>
+</Database>
