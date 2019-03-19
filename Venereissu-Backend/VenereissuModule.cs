@@ -12,26 +12,22 @@ using System.Threading.Tasks;
 
 namespace Venereissu_backend
 {
-    public class HelloModule : NancyModule
+    public class VenereissuModule : NancyModule
     {
-
-
-
-
-        public HelloModule()
+        public VenereissuModule()
         {
+            StaticConfiguration.DisableErrorTraces = false;
+
             var db = new VenereissutDataContext();
 
             Get["/Hello"] = parameters => "Hello World";
-
 
             // Login
             Post["/Login"] = p =>
             {
             Login model = this.Bind();
             // Haetaan käyttäjän tiedot tietokannasta username:n perusteella
-            User q = (from a in db.Users where model.username == a.UserName select a).FirstOrDefault();
-            List<User> everything = (from a in db.Users select a).ToList();
+            User q = (from a in db.Users where model.username == a.UserName select a).FirstOrDefault();          
             ISimpleHash simpleHash = new SimpleHash();
             if (simpleHash.Verify(model.passwd, q.Password))
                 {
@@ -50,7 +46,23 @@ namespace Venereissu_backend
 
             Post["/Logoff"] = p =>
             {
-                return "Logoff OK.";
+                var id = Request.Body;
+                var length = Request.Body.Length;
+                var data = new byte[length];
+                id.Read(data, 0, (int)length);
+                var body = System.Text.Encoding.Default.GetString(data);
+
+                var q = (from a in db.Users where a.SessionId == body select a).FirstOrDefault();
+                if (q != null)
+                {
+                    // Tyhjennetään ko. käyttäjän sessionId palvelimelta.
+                    q.SessionId = String.Empty;                    
+                    db.SubmitChanges();
+                    return "Logoff successful." + body;
+                }
+
+                // Logoff ei täsmännyt, palautetaan tyhjä vastaus.
+                return String.Empty;
             };
 
             Post["/addUser"] = p =>
@@ -78,12 +90,9 @@ namespace Venereissu_backend
 
             Post["/addKohde"] = p =>
             {
-                  KohdeWAuthentication m = this.Bind();
-                //Kohde km = this.Bind();
-                
+                KohdeWAuthentication m = this.Bind();
                 if (!Authenticate(m.token, db)) return String.Empty;
-                Kohteet k = new Kohteet { Kohde_Id = m.Kohde_Id, Koordinaatit = m.Koordinaatit, KuvaBase64 = m.KuvaBase64, Kuvausteksti = m.Kuvausteksti, Nimi = m.Nimi };
-                //Kohteet k = new Kohteet { Koordinaatit = km.Koordinaatit, Nimi = km.Nimi };
+                Kohteet k = new Kohteet { Kohde_Id = m.Kohde_Id, Koordinaatit = m.Koordinaatit, KuvaBase64 = m.KuvaBase64, Kuvausteksti = m.Kuvausteksti, Nimi = m.Nimi };               
                 db.Kohteets.InsertOnSubmit(k);
                 db.SubmitChanges();
                 return "Done inserting Kohde!";
@@ -121,8 +130,7 @@ namespace Venereissu_backend
 
 
 
-            Get["/Kohteet/{id}"] = p => (GetKohde(p.id, db));
-        
+            Get["/Kohteet/{id}"] = p => (GetKohde(p.id, p.token, db));
         
 
 
@@ -149,18 +157,30 @@ namespace Venereissu_backend
          return false;
         }
 
-        private dynamic GetKohde(dynamic id, VenereissutDataContext db)
+        private dynamic GetKohde(dynamic id, string token, VenereissutDataContext db)
         {
+            //if (!Authenticate(token, db)) return String.Empty;
             var idInt = 0;
             bool muunna = Int32.TryParse((string)id, out idInt);
-             var q = (from a in db.Kohteets where a.Kohde_Id == idInt select a).FirstOrDefault();
-            //var q = (from a in db.Tehtavats select new { TehtavanNimi = a.Tehtava, Tekija = a.Kayttajat.Nimi }).ToList();
-            return q;
+            Kohteet eka = new Kohteet { Nimi = "Porvoo", Koordinaatit ="r455", Kohde_Id = 0, KohteetReissuts = null, KuvaBase64 = "KUVABASE6", Kuvausteksti =" kuv. text." };
+            Kohteet toka = new Kohteet { Nimi = "Loviisa", Koordinaatit = "r457", Kohde_Id = 1, KohteetReissuts = null, KuvaBase64 = "KUVALOVIISASTA", Kuvausteksti = " kuv. text Loviisasta." };
+            var listaKohteista = new List<Kohteet>();
+            listaKohteista.Add(eka); listaKohteista.Add(toka);
+            return listaKohteista;
+  
+            if (muunna) return  (from a in db.Kohteets where a.Kohde_Id == idInt select a).FirstOrDefault();          
+            else return (from a in db.Kohteets where a.Kohde_Id == idInt select a).ToList();
         }
 
-        public HelloModule(string modulePath) : base(modulePath)
+        private dynamic GetKohteet(VenereissutDataContext db)
         {
+            List<Kohteet> ql = (from a in db.Kohteets select a).ToList();           
+            return ql;
         }
+
+
+
+  
     }
     
     
